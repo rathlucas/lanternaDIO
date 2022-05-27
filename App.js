@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import Torch from 'react-native-torch';
+import RNShake from 'react-native-shake';
 
 const App = () => {
-  const toggle = false;
+  const [toggle, setToggle] = useState(false);
 
   const lightOn = require('./assets/icons/eco-light.png');
   const lightOff = require('./assets/icons/eco-light-off.png');
@@ -10,9 +12,18 @@ const App = () => {
   const logoDio = require('./assets/icons/logo-dio.png');
   const logoDioWhite = require('./assets/icons/logo-dio-white.png');
 
+  const handleSetToggle = () => {
+    setToggle(oldToggle => !oldToggle);
+  };
+
+  useEffect(() => {
+    // Liga o flash do celular
+    Torch.switchState(toggle);
+  }, [toggle]);
+
   return (
     <View style={toggle ? styles.containerLight : styles.container}>
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity onPress={handleSetToggle}>
         <Image
           style={toggle ? styles.lightBulbOn : styles.lightBulbOff}
           source={toggle ? lightOn : lightOff}
